@@ -1,0 +1,56 @@
+// https://hugogiraudel.com/2013/08/12/sass-functions/
+// This allows us to either include the px unit or not in the function call.
+$base-font-size: 2.4em;
+$base-line-height: 1.5em;
+$font-size-base: 16;
+
+@function em($pixels, $context: $font-size-base) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+/*--------------------------------------------------------------
+1.0 Colors
+--------------------------------------------------------------*/
+$color-screen: #0192FD;
+$color-pad: #282c34;
+$color-topPad: #a7acbe;
+$color-midPad: #308dcf;
+$color-lowPad: #3bc44f;
+
+/*--------------------------------------------------------------
+2.0 Breakpoints
+--------------------------------------------------------------*/
+
+$breakpoint-sm-tablet: 30em;
+/*
+@media (min-width: $breakpoint-sm-tablet) {
+}
+ 480px */
+$breakpoint-tablet: 48em;
+/*
+@media (min-width: $breakpoint-tablet) {
+}
+768px */
+$breakpoint-desktop: em(1025px);
+/*
+@media (min-width: $breakpoint-desktop) {
+}
+1024px */
+$breakpoint-lg-desktop: 67em;
+/*
+@media (min-width: $breakpoint-lg-desktop) {
+}
+1072px */
+$breakpoint-xl-desktop: 79em;
+/*
+@media (min-width: $breakpoint-xl-desktop) {
+}
+1264px */

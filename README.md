@@ -1,44 +1,89 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Synopsis
 
-## Available Scripts
+This is a Pomodoro Clock using React.
 
-In the project directory, you can run:
+![screenshot of the Pomodoro clock](/src/screenshot.jpg?raw=true "screenshot of a Pomodoro clock")
 
-### `npm start`
+## Usage example
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+:construction: work in progress...See a live version running this template - https://alexdisdier.fr/pomodoro-clock/
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Guideline and Challenges
 
-### `npm test`
+### Guideline
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+:art: Style
+* Gradient background
+* Avenir font style
+* Work will be of red descendant
+* Break will be of blue descendant
 
-### `npm run build`
+:wrench: Functionalities
+* Settings menu (slide right to left)
+  * set time to focus
+  * set time to break
+  * set up to 4 Cycles
+  * reset to default
+* Display Screens (red or blue)
+  * Big Ellipse should color countdown progression
+  * Inside Big Ellipse, we can see the time and a text representing the state
+  * Small Ellipse represents the cycles
+  * Play/ Pause Button
+  * Above the Button, we should see a motivational sentence
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Challenges
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Finding the right directory structure for my app before coding the design (figma). 
+* deciding between a state and a functional component. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Once I have my directory structure, I'll code the design I made in Figma
 
-### `npm run eject`
+## Directory Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+pomodoro-clock
+├── .git
+├── build
+├── node_modules
+├── public
+├── src
+│   ├── components
+│   │   ├── Timer
+│   │   ├── Cycle
+│   │   ├── Settings
+│   ├── containers
+│   │   ├── Pomodoro.css
+│   │   ├── Pomodoro.js
+│   │   ├── Pomodoro.test.js
+│   ├── index.css
+│   ├── index.js
+│   └── serviceWorker.js
+├── .gitattributes
+├── .gitignore
+├── package-lock.json
+├── package.json
+└── README.md
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Built With
 
-## Learn More
+* html
+* scss
+* [JavaScript](https://developer.mozilla.org/bm/docs/Web/JavaScript)
+* [React.js](https://reactjs.org/docs/hello-world.html)
+* [Create React App](https://facebook.github.io/create-react-app/docs/getting-started)
+* [Figma](https://www.figma.com/file/YBeuYLtXG7TJWOaQIG61DCjQ/Pomodoro-web-app?node-id=0%3A1)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Authors
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Alex Disdier** - *Initial work* - [alexdisdier](https://github.com/alexdisdier)
+
+## Acknowledgments
+
+* This is part of Front End Libraries Projects in order to get the certification from [FreeCodeCamp](https://learn.freecodecamp.org/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)
+
+* This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+* List of github emoji code [emoji](https://gist.github.com/parmentf/035de27d6ed1dce0b36a)
