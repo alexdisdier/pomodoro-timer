@@ -1,5 +1,6 @@
 import React from 'react';
-import logo, { ReactComponent as PlayLogo } from './play.svg';
+import play, { ReactComponent as PlayLogo } from './play.svg';
+import pause, { ReactComponent as PauseLogo } from './pause.svg';
 import './Start.scss';
 
 const start = (props) => {
@@ -10,7 +11,7 @@ const start = (props) => {
       {!props.timerStart ? (
         <PlayLogo className="play-icon" alt="play icon"/>
       ) : (
-        '||'
+        <PauseLogo className="play-icon" alt="play icon"/>
       )}
 
       </div>
