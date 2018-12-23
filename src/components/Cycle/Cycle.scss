@@ -1,0 +1,30 @@
+@import '../../Utils/helpers';
+
+.circle-cycle-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: em(16px);
+}
+
+.circle-cycle {
+  margin: em(8px);
+  background-color: #fff;
+  width: 16px;
+  height: 16px;
+  border-radius: 1000px; 
+
+  @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.circle-cycle:first-child {
+  background-color: #B6371D;
+}
+
+.cycle-slogan {
+  text-align: center;
+}
+

@@ -1,15 +1,21 @@
 @import '../../Utils/helpers';
 
 .circle-play {
+  margin: em(8px);
+  padding: em(8px);
   border: 2px solid #fff;
   background-color: transparent;
   width: 40px;
   height: 40px;
   border-radius: 1000px; 
-  margin: 0.5em;
 
   &:hover {
     cursor: pointer;
+  }
+  
+  @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
+    width: 80px;
+    height: 80px;
   }
 }
 
@@ -26,4 +32,8 @@
   width: 20px;
   height: auto;
   fill: #fff;
+
+  @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
+    width: 40px;
+  }
 }

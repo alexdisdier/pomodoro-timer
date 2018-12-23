@@ -10,9 +10,32 @@
   width: 100%;
   background-color: #fff;
   color: #000;
+  // transition: 0.5s;
+}
+
+.settings-children {
+  width: 100%;
+  text-align: center;
 }
 
 .settings-manip {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   padding-top: 16px;
-  text-align: center;
+
+  button {
+    font-size: 24px;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.reset-btn {
+  font-size: calc(10px + 2vmin);
+  color: #999999;
+  border: none;
 }

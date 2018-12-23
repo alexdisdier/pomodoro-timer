@@ -1,8 +1,9 @@
 import React from 'react';
+import './Cycle.scss';
 
 const cycle = (props) => {
   return (
-    <div>
+    <div className = "settings-children cycle">
       <span id="cycles-label">
         Cycles
       </span>

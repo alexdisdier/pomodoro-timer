@@ -1,8 +1,9 @@
 import React from 'react';
+import './Session.scss';
 
 const session = (props) => {
   return (
-    <div>
+    <div className = "settings-children session">
       <span id="session-label">
         Stay focused
       </span>

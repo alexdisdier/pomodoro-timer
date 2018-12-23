@@ -9,7 +9,7 @@ const settings = (props) => {
 
   return (
     <div id="settings">
-      <Session 
+      <Session
         sessionLen = {props.sessionLen}
         incSessionHandler = {props.incSessionHandler}
         decSessionHandler = {props.decSessionHandler}
@@ -24,7 +24,9 @@ const settings = (props) => {
         incCycleHandler = {props.incCycleHandler}
         decCycleHandler = {props.decCycleHandler}
       />
-      <button onClick={props.resetHandler}>Reset Default</button>
+      <button className = "reset-btn"
+        onClick={props.resetHandler}>Reset Default
+      </button>
     </div>
   )
 };

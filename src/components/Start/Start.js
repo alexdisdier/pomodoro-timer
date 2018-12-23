@@ -1,6 +1,6 @@
 import React from 'react';
-import play, { ReactComponent as PlayLogo } from './play.svg';
-import pause, { ReactComponent as PauseLogo } from './pause.svg';
+import { ReactComponent as PlayLogo } from './play.svg';
+import { ReactComponent as PauseLogo } from './pause.svg';
 import './Start.scss';
 
 const start = (props) => {

@@ -27,7 +27,7 @@ body {
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 
   @media (min-width: $breakpoint-desktop) {
-    height: 560px;
+    height: 568px;
     width: 320px;
   }
 }
@@ -50,6 +50,11 @@ body {
   
   &:focus{
     outline: none;
+  }
+
+  @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
+    width: 40px;
+    font-size: 40px;
   }
 }
 .settings-icon {

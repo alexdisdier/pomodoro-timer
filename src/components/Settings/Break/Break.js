@@ -1,8 +1,9 @@
 import React from 'react';
+import './Break.scss';
 
 const Break = (props) => {
   return (
-    <div>
+    <div className = "settings-children break">
       <span id="break-label">
         Take a break
       </span>

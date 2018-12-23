@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo, { ReactComponent as SettingsLogo } from './settings.svg';
+import { ReactComponent as SettingsLogo } from './settings.svg';
 import './Pomodoro.scss';
 
 import Timer from '../components/Timer/Timer';
@@ -10,7 +10,7 @@ import Start from '../components/Start/Start';
 class Pomodoro extends Component {
   constructor(props){
     super(props);
-
+ 
     this.state = {
       breakLen: 5,
       sessionLen: 25,
@@ -19,7 +19,9 @@ class Pomodoro extends Component {
       timerTxt: '', // timer text (work or take a break)
       cycles: 3,
       timerStart: false,
-      showSettings: false
+      showSettings: false,
+      seconds: null,
+      timer: null
     }
 
     this.incBreakHandler = this.incBreakHandler.bind(this);
@@ -31,6 +33,9 @@ class Pomodoro extends Component {
     this.resetHandler = this.resetHandler.bind(this);
     this.toggleSettingsHandler = this.toggleSettingsHandler.bind(this);
     this.timerStartHandler = this.timerStartHandler.bind(this);
+    this.tick = this.tick.bind(this);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
   }
 
   incBreakHandler = () => {
@@ -44,7 +49,7 @@ class Pomodoro extends Component {
   decBreakHandler = () => {
     // console.log('clicked on decBreakHandler');
     const breakLen = this.state.breakLen;
-    if (breakLen > 0){
+    if (breakLen > 1){
       this.setState({ breakLen: breakLen - 1 })
     };
   }
@@ -60,7 +65,7 @@ class Pomodoro extends Component {
   decSessionHandler = () => {
     // console.log('clicked on decSessionHandler');
     const sessionLen = this.state.sessionLen;
-    if (sessionLen > 0){
+    if (sessionLen > 1){
       this.setState({ sessionLen: sessionLen - 1 })
     };
   }
@@ -101,10 +106,45 @@ class Pomodoro extends Component {
   }
 
   timerStartHandler = () => {
-    console.log('play pause btn');
     const timerStart = this.state.timerStart;
-    this.setState({ timerStart: !timerStart });
+
+    this.setState({ 
+      timerStart: !timerStart
+    });
+
+    if (!timerStart){
+      console.log('timer started');
+      this.start();
+    } else {
+      console.log('timer paused');
+      this.stop();
+    }
+  };
+
+  tick = () => {
+    console.log(this.state.seconds);
+    const seconds = this.state.seconds;
+    this.setState({ seconds: seconds-1});
   }
+
+  start = () => {
+    if (this.state.seconds !== null){
+      this.tick();
+      this.setState({
+        timer: setTimeout(this.start, 1000)
+      })
+    } else {
+      this.setState({
+        seconds: this.state.sessionLen * 60,
+        timer: setTimeout(this.start, 1000)
+      })
+    }
+  }
+
+  stop = () => {
+    clearTimeout(this.state.timer);
+    console.log(this.state.timer);
+  };
 
   render() {
     let settings = null;

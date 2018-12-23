@@ -9,7 +9,7 @@ const timer = (props) => {
               {props.timerType} is on
             </span>
             <span className="time">
-              25:00
+              {props.timerType === 'session' ? props.sessionLen : props.breakLen}:00
             </span>
           </div>
     </div>
