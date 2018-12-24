@@ -14,14 +14,18 @@ class Pomodoro extends Component {
     this.state = {
       breakLen: 5,
       sessionLen: 25,
+      minutesLeft: null,
+      secondsLeft: null,
+      intervalId: null,
       timerType: 'session',
-      timerNum: '', // time left
+      timerSeconds: '', // time left
       timerTxt: '', // timer text (work or take a break)
+
       cycles: 3,
+
       timerStart: false,
       showSettings: false,
-      seconds: null,
-      timer: null
+      
     }
 
     this.incBreakHandler = this.incBreakHandler.bind(this);
@@ -36,6 +40,7 @@ class Pomodoro extends Component {
     this.tick = this.tick.bind(this);
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
+    this.displayTimer = this.displayTimer.bind(this);
   }
 
   incBreakHandler = () => {
@@ -91,10 +96,13 @@ class Pomodoro extends Component {
     this.setState({
       breakLen: 5,
       sessionLen: 25,
-      timerType: 'session',
-      timerNum: '', // time left
+      minutesLeft: null,
+      secondsLeft: null,
+      intervalId: null,
       timerTxt: '', // timer text (work or take a break)
+
       cycles: 3,
+      
       timerStart: false
     })
   }
@@ -122,29 +130,67 @@ class Pomodoro extends Component {
   };
 
   tick = () => {
-    console.log(this.state.seconds);
-    const seconds = this.state.seconds;
-    this.setState({ seconds: seconds-1});
+    console.log('ticking');
+    const minutesLeft = this.state.minutesLeft; //25
+    const secondsLeft = this.state.secondsLeft; //59
+    
+    if (this.state.secondsLeft > 0){
+      this.setState({ 
+        secondsLeft: secondsLeft - 1
+      });
+    } 
+    else if (this.state.secondsLeft === 0){
+      this.setState({ 
+        minutesLeft: minutesLeft - 1,
+        secondsLeft: 59
+      });
+    }     
   }
 
   start = () => {
-    if (this.state.seconds !== null){
-      this.tick();
+    if (this.state.sessionLen !== null &&         this.state.minutesLeft === null && this.state.secondsLeft === null) {
       this.setState({
-        timer: setTimeout(this.start, 1000)
+        intervalId: setInterval(this.tick,1000),
+        timerSeconds: this.state.sessionLen * 60,
+        minutesLeft: this.state.sessionLen-1,
+        secondsLeft: 59
       })
+      // const timerSeconds = this.state.timerSeconds
     } else {
       this.setState({
-        seconds: this.state.sessionLen * 60,
-        timer: setTimeout(this.start, 1000)
+        intervalId: setInterval(this.tick,1000)
       })
     }
   }
 
   stop = () => {
-    clearTimeout(this.state.timer);
-    console.log(this.state.timer);
+    clearInterval(this.state.intervalId);
   };
+
+  displayTimer = () => {
+    let minutesLeft;
+    let secondsLeft;
+    if (this.state.minutesLeft !== null) {
+        minutesLeft = parseInt(this.state.minutesLeft);
+        secondsLeft = parseInt(this.state.secondsLeft);
+      if (this.state.minutesLeft < 10){
+        minutesLeft = '0'+ parseInt(this.state.minutesLeft);
+      }
+      if (this.state.secondsLeft < 10){
+        secondsLeft = '0' + parseInt(this.state.secondsLeft);
+      }
+    } else {
+      if (this.state.sessionLen < 10){
+        minutesLeft = '0' + parseInt(this.state.sessionLen);
+        secondsLeft = '00';
+      } else {
+        minutesLeft = parseInt(this.state.sessionLen);
+        secondsLeft = '00';
+      }
+    }
+   
+    return minutesLeft + ':' + secondsLeft;
+  }
 
   render() {
     let settings = null;
@@ -177,14 +223,15 @@ class Pomodoro extends Component {
         <SettingsLogo className="settings-icon" alt="settings icon"/>
       ) : (
         'x'
-      )}
-          
+      )}  
         </button>
-
           <Timer
             timerType = {this.state.timerType}
             breakLen = {this.state.breakLen}
             sessionLen = {this.state.sessionLen}
+            minutesLeft = {this.state.minutesLeft}
+            secondsLeft = {this.state.secondsLeft}
+            displayTimer = {this.displayTimer}
           />
           <Cycle 
             timerType = {this.state.timerType}
