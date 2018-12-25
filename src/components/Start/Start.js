@@ -6,7 +6,7 @@ import './Start.scss';
 const start = (props) => {
   return (
     <div className="circle-play">
-      <div className="circle-play-content" onClick={props.timerStartClicked}>
+      <div id="start_stop" className="circle-play-content" onClick={props.timerStartClicked}>
 
       {!props.timerStart ? (
         <PlayLogo className="play-icon" alt="play icon"/>

@@ -5,10 +5,10 @@ const timer = (props) => {
   return (
     <div className="circle">
           <div className="circle-content">
-            <span className="text">
-              {props.timerType} is on
+            <span id="timer-label" className="text">
+              {props.timerSession ? 'session' : 'break'} is on
             </span>
-            <span className="time">
+            <span id="time-left" className="time">
               {props.displayTimer()}
             </span>
           </div>

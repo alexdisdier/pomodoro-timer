@@ -87,3 +87,7 @@ pomodoro-clock
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 * List of github emoji code [emoji](https://gist.github.com/parmentf/035de27d6ed1dce0b36a)
+
+* (clearIntervall doesn't work)[https://stackoverflow.com/questions/8184135/clearinterval-doesnt-work]
+
+* 

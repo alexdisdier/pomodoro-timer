@@ -24,7 +24,7 @@ const settings = (props) => {
         incCycleHandler = {props.incCycleHandler}
         decCycleHandler = {props.decCycleHandler}
       />
-      <button className = "reset-btn"
+      <button id="reset" className = "reset-btn"
         onClick={props.resetHandler}>Reset Default
       </button>
     </div>

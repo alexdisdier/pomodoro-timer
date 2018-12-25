@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { ReactComponent as SettingsLogo } from './settings.svg';
+import alarmTone from '../assets/mp3/alarm-tone/alarm-tone.mp3';
+import coolAlarm from '../assets/mp3/cool-alarm/cool-alarm.mp3';
 import './Pomodoro.scss';
 
 import Timer from '../components/Timer/Timer';
@@ -17,13 +19,14 @@ class Pomodoro extends Component {
       minutesLeft: null,
       secondsLeft: null,
       intervalId: null,
-      timerType: 'session',
-      timerSeconds: '', // time left
-      timerTxt: '', // timer text (work or take a break)
+      
+      timerSession: true,
 
       cycles: 3,
+      cyclesLeft: null,
 
       timerStart: false,
+      cyclesStarted: false,
       showSettings: false,
       
     }
@@ -41,6 +44,8 @@ class Pomodoro extends Component {
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.displayTimer = this.displayTimer.bind(this);
+    this.displayCycles = this.displayCycles.bind(this);
+    this.alarmSoundHandler = this.alarmSoundHandler.bind(this);
   }
 
   incBreakHandler = () => {
@@ -86,25 +91,34 @@ class Pomodoro extends Component {
   decCycleHandler = () => {
     // console.log('clicked on decCycleHandler');
     const cycles = this.state.cycles;
-    if (cycles > 0){
+    if (cycles > 1){
       this.setState({ cycles: cycles - 1 })
     };
   }
 
   resetHandler = () => {
+    this.stop();
     // console.log('clicked on resetHandler');
     this.setState({
       breakLen: 5,
       sessionLen: 25,
+
       minutesLeft: null,
       secondsLeft: null,
-      intervalId: null,
-      timerTxt: '', // timer text (work or take a break)
+
+      intervalId: null, // for clearInterval
+
+      // timerTxt: '', // timer text (work or take a break)
 
       cycles: 3,
+      cyclesLeft: null,
+      cyclesStarted: false,
       
-      timerStart: false
+      timerStart: false,
     })
+    // let audio = document.getElementById('beep');
+    // audio.pause(); 
+    // audio.currentTime = 0;
   }
 
   toggleSettingsHandler = () => {
@@ -117,7 +131,8 @@ class Pomodoro extends Component {
     const timerStart = this.state.timerStart;
 
     this.setState({ 
-      timerStart: !timerStart
+      timerStart: !timerStart,
+      cyclesStarted: true
     });
 
     if (!timerStart){
@@ -130,32 +145,71 @@ class Pomodoro extends Component {
   };
 
   tick = () => {
-    console.log('ticking');
+    // console.log('ticking');
     const minutesLeft = this.state.minutesLeft; //25
     const secondsLeft = this.state.secondsLeft; //59
-    
-    if (this.state.secondsLeft > 0){
-      this.setState({ 
-        secondsLeft: secondsLeft - 1
-      });
+    const timerSession = this.state.timerSession; // Default set to true
+    const cyclesLeft = this.state.cyclesLeft;
+    // if timer set to session when 00:00, then set timer to break and vice versa. Every time break ends
+    if (this.state.cyclesLeft === 0) {
+      this.setState({
+        timerStart: false
+      })
+      return this.resetHandler();
+    }
+    else if (this.state.minutesLeft === 0 && this.state.secondsLeft === 0 && this.state.cyclesLeft > 0 && this.state.timerSession){ // checks if timer was set on session
+      // console.log('We are on break');
+      let audio = document.getElementById('beep');
+      
+      this.setState({
+        minutesLeft: this.state.breakLen,
+        secondsLeft: 0,
+
+        timerSession: !timerSession // if true, returns false meaning break
+      })
+      audio.play();
     } 
-    else if (this.state.secondsLeft === 0){
-      this.setState({ 
-        minutesLeft: minutesLeft - 1,
-        secondsLeft: 59
-      });
-    }     
+
+    else if (this.state.minutesLeft === 0 && this.state.secondsLeft === 0 && this.state.cyclesLeft > 0 && !this.state.timerSession) { // checks if the timer was set on break
+      // console.log('we are back on a session with one less cycle');
+      let audio = document.getElementById('beep');
+      
+      this.setState({
+        minutesLeft: this.state.sessionLen,
+        secondsLeft: 0,
+        // cycles: this.state.cycles - 1,
+        cyclesLeft: cyclesLeft - 1,
+
+        timerSession: !timerSession // if true, returns false meaning break
+      })
+      audio.play();
+    }
+    
+    else {
+      if (this.state.secondsLeft > 0){
+        this.setState({ 
+          secondsLeft: secondsLeft - 1
+        });
+      } 
+      else if (this.state.secondsLeft === 0){
+        this.setState({ 
+          minutesLeft: minutesLeft - 1,
+          secondsLeft: 59
+        });
+      }   
+    }
   }
 
   start = () => {
-    if (this.state.sessionLen !== null &&         this.state.minutesLeft === null && this.state.secondsLeft === null) {
+    if (this.state.sessionLen !== null && this.state.minutesLeft === null && this.state.secondsLeft === null) {
       this.setState({
         intervalId: setInterval(this.tick,1000),
-        timerSeconds: this.state.sessionLen * 60,
+        // timerSeconds: this.state.sessionLen * 60,
         minutesLeft: this.state.sessionLen-1,
-        secondsLeft: 59
+        secondsLeft: 59,
+        cyclesLeft: this.state.cycles
       })
-      // const timerSeconds = this.state.timerSeconds
+      
     } else {
       this.setState({
         intervalId: setInterval(this.tick,1000)
@@ -192,6 +246,22 @@ class Pomodoro extends Component {
     return minutesLeft + ':' + secondsLeft;
   }
 
+  displayCycles = () => { // this functions is called too many times 
+    const circlesArr = [];
+    // let cycles = this.state.cycles - this.state.cyclesLeft;
+    // console.log(cycles);
+
+    for (let i = 0; i < this.state.cycles; i++) {
+      circlesArr.push(<div key={i}className="circle-cycle"></div>);   
+    }
+    // console.log(circlesArr);
+    return circlesArr;
+  }
+
+  alarmSoundHandler = () => {
+ 
+  }
+
   render() {
     let settings = null;
 
@@ -214,9 +284,17 @@ class Pomodoro extends Component {
       />
     };
 
+    let pomodoroBg = {
+      background: "linear-gradient(165.18deg, #D66770 0%, rgba(254, 111, 69, 0.86) 92.3%)"
+    }
+
+    if (!this.state.timerSession){
+      pomodoroBg.background = "linear-gradient(163.95deg, #94CCCB 1.06%, #E1E19D 92.27%)"
+    }
+
     return (
       <div className="App">
-        <div className="Pomodoro-container">
+        <div className="Pomodoro-container" style={pomodoroBg}>
 
         <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
         {!this.state.showSettings ? (
@@ -226,16 +304,20 @@ class Pomodoro extends Component {
       )}  
         </button>
           <Timer
-            timerType = {this.state.timerType}
+            timerSession = {this.state.timerSession}
             breakLen = {this.state.breakLen}
             sessionLen = {this.state.sessionLen}
             minutesLeft = {this.state.minutesLeft}
             secondsLeft = {this.state.secondsLeft}
             displayTimer = {this.displayTimer}
           />
-          <Cycle 
+          <Cycle
             timerType = {this.state.timerType}
+            timerSession = {this.state.timerSession}
             cycles = {this.state.cycles}
+            cyclesStarted = {this.state.cyclesStarted}
+            cyclesLeft = {this.state.cyclesLeft}
+            displayCycles = {this.displayCycles}
           />
           {settings}
           <Start 
@@ -243,6 +325,8 @@ class Pomodoro extends Component {
             timerStart = {this.state.timerStart}
           />
         </div>
+        <audio id="beep" src={this.state.timerSession ? coolAlarm : alarmTone}>
+        </audio>
       </div>
     );
   }

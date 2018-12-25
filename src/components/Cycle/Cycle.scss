@@ -9,10 +9,11 @@
 
 .circle-cycle {
   margin: em(8px);
-  background-color: #fff;
   width: 16px;
   height: 16px;
   border-radius: 1000px; 
+  background-color: #fff;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.03);
 
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
     width: 32px;
@@ -20,8 +21,16 @@
   }
 }
 
-.circle-cycle:first-child {
+// .circle-cycle:first-child {
+//   background-color: #B6371D;
+// }
+
+.session-circle-active {
   background-color: #B6371D;
+}
+
+.break-circle-active {
+  background-color: #59C8C6;
 }
 
 .cycle-slogan {
