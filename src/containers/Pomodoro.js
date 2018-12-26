@@ -51,33 +51,69 @@ class Pomodoro extends Component {
   incBreakHandler = () => {
     // console.log('clicked on incBreakHandler');
     const breakLen = this.state.breakLen;
-    if (breakLen < 60 ){
-      this.setState({ breakLen: breakLen + 1 })
-    };
+    if (!this.state.timerStart){
+      if (breakLen < 60 ){
+        this.setState({ breakLen: breakLen + 1 })
+      };
+      if (this.state.timerSession && breakLen < 60){
+        this.setState({ 
+          breakLen: breakLen + 1,
+          minutesLeft: null,
+          secondsLeft: null
+         })
+      }
+    }
   }
 
   decBreakHandler = () => {
     // console.log('clicked on decBreakHandler');
     const breakLen = this.state.breakLen;
-    if (breakLen > 1){
-      this.setState({ breakLen: breakLen - 1 })
-    };
+    if (!this.state.timerStart){
+      if (breakLen > 1){
+        this.setState({ breakLen: breakLen - 1 })
+      };
+      if (this.state.timerSession && breakLen > 1){
+        this.setState({ 
+          breakLen: breakLen - 1,
+          minutesLeft: null,
+          secondsLeft: null
+         })
+      }
+    }
   }
 
   incSessionHandler = () => {
     // console.log('clicked on incSessionHandler');
     const sessionLen = this.state.sessionLen;
-    if (sessionLen < 60 ){
-      this.setState({ sessionLen: sessionLen + 1 })
-    };
+    if (!this.state.timerStart){
+      if (sessionLen < 60 ){
+        this.setState({ sessionLen: sessionLen + 1 })
+      };
+      if (this.state.timerSession && sessionLen < 60 ){
+        this.setState({ 
+          sessionLen: sessionLen + 1,
+          minutesLeft: null,
+          secondsLeft: null
+         })
+      }
+    }
   }
 
   decSessionHandler = () => {
     // console.log('clicked on decSessionHandler');
     const sessionLen = this.state.sessionLen;
-    if (sessionLen > 1){
-      this.setState({ sessionLen: sessionLen - 1 })
-    };
+    if (!this.state.timerStart){
+      if (sessionLen > 1){
+        this.setState({ sessionLen: sessionLen - 1 })
+      };
+      if (this.state.timerSession && sessionLen > 1){
+        this.setState({ 
+          sessionLen: sessionLen - 1,
+          minutesLeft: null,
+          secondsLeft: null
+         })
+      }
+    }
   }
 
   incCycleHandler = () => {
@@ -114,11 +150,9 @@ class Pomodoro extends Component {
       cyclesLeft: null,
       cyclesStarted: false,
       
-      timerStart: false,
+      timerStart: false
+      // timerSession: true
     })
-    // let audio = document.getElementById('beep');
-    // audio.pause(); 
-    // audio.currentTime = 0;
   }
 
   toggleSettingsHandler = () => {
@@ -219,6 +253,9 @@ class Pomodoro extends Component {
 
   stop = () => {
     clearInterval(this.state.intervalId);
+    // let audio = document.getElementById('beep');
+    // audio.pause(); 
+    // audio.currentTime = 0;
   };
 
   displayTimer = () => {
