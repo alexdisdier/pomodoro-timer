@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ReactComponent as SettingsLogo } from './settings.svg';
-import alarmTone from '../assets/mp3/alarm-tone/alarm-tone.mp3';
+// import alarmTone from '../assets/mp3/alarm-tone/alarm-tone.mp3';
 import coolAlarm from '../assets/mp3/cool-alarm/cool-alarm.mp3';
 import './Pomodoro.scss';
 
@@ -99,7 +99,7 @@ class Pomodoro extends Component {
       if (this.state.timerSession && sessionLen < 60 ){
         this.setState({ 
           sessionLen: sessionLen + 1,
-          timerTotal: this.state.timerTotal + 60,
+          timerTotal: (sessionLen + 1) * 60,
          })
       }
     }
@@ -118,7 +118,7 @@ class Pomodoro extends Component {
       if (this.state.timerSession && sessionLen > 1){
         this.setState({ 
           sessionLen: sessionLen - 1,
-          timerTotal: this.state.timerTotal - 60,
+          timerTotal: (sessionLen - 1) * 60,
          })
       }
     }
@@ -207,9 +207,17 @@ class Pomodoro extends Component {
   };
 
   tick = () => {
+    const audio = document.getElementById('beep');
 
-    if (this.state.timerTotal === 0) {
-      let audio = document.getElementById('beep');
+    if (this.state.timerTotal === 0 && this.state.timerSession) {
+      audio.play();
+      this.setState({
+        timerTotal: this.state.breakLen * 60,
+        timerSession: false
+      })
+    }
+
+    else if (this.state.timerTotal === 0 && !this.state.timerSession) {
       audio.play();
       this.resetHandler();
     }
@@ -260,7 +268,7 @@ class Pomodoro extends Component {
   }
 
   alarmSoundHandler = () => {
- 
+    console.log('alarmSoundHandler');
   }
 
   render() {
@@ -324,7 +332,7 @@ class Pomodoro extends Component {
             timerStart = {this.state.timerStart}
           />
         </div>
-        <audio id="beep" src={this.state.timerSession ? coolAlarm : alarmTone}>
+        <audio id="beep" src={coolAlarm}>
         </audio>
       </div>
     );
