@@ -16,27 +16,23 @@ self.__precacheManifest = [
     "url": "/pomodoro-timer/static/media/cool-alarm.8c0b93aa.mp3"
   },
   {
-    "revision": "f93d2b2e03173ea6b51fe02ac9334996",
-    "url": "/pomodoro-timer/static/media/alarm-tone.f93d2b2e.mp3"
-  },
-  {
     "revision": "0658e00c52dc08538d90",
     "url": "/pomodoro-timer/static/js/runtime~main.0658e00c.js"
   },
   {
-    "revision": "612dfa550de3128c5f31",
-    "url": "/pomodoro-timer/static/js/main.612dfa55.chunk.js"
+    "revision": "f5cf8ab6980a574864e1",
+    "url": "/pomodoro-timer/static/js/main.f5cf8ab6.chunk.js"
   },
   {
-    "revision": "5dabcbe8720b380beb5e",
-    "url": "/pomodoro-timer/static/js/1.5dabcbe8.chunk.js"
+    "revision": "41a42bb19570b1e8d2ec",
+    "url": "/pomodoro-timer/static/js/1.41a42bb1.chunk.js"
   },
   {
-    "revision": "612dfa550de3128c5f31",
-    "url": "/pomodoro-timer/static/css/main.42bdc095.chunk.css"
+    "revision": "f5cf8ab6980a574864e1",
+    "url": "/pomodoro-timer/static/css/main.95276229.chunk.css"
   },
   {
-    "revision": "a80115d490b5c4f18d7a08569fc1e8d1",
+    "revision": "6c54ef170c2690ff324fc61d3349b8b9",
     "url": "/pomodoro-timer/index.html"
   }
 ];
