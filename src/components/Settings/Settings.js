@@ -8,7 +8,7 @@ import Cycle from './Cycle/Cycle';
 const settings = (props) => {
 
   return (
-    <div id="settings">
+    <div id="settings" className={props.settingsClass}>
       <Session
         sessionLen = {props.sessionLen}
         incSessionHandler = {props.incSessionHandler}

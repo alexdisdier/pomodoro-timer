@@ -19,15 +19,16 @@ class Pomodoro extends Component {
       intervalId: null,
       
       timerSession: true,
-      timerType: 'session',
-      timerTotal: 1500, 
+      timer: 1500, 
 
-      cycles: 1,
+      cycles: 3,
       cyclesLeft: null,
 
       timerStart: false,
       cyclesStarted: false,
-      showSettings: false,
+      // showSettings: false,
+
+      settingsClass: "slide-settings"
       
     }
 
@@ -55,13 +56,13 @@ class Pomodoro extends Component {
       if (breakLen < 60 ){
         this.setState({ 
           breakLen: breakLen + 1,
-          // timerTotal: this.state.timerTotal + 60,
+          // timer: this.state.timer + 60,
         })
       };
       if (this.state.timerSession && breakLen < 60){
         this.setState({ 
           breakLen: breakLen + 1,
-          // timerTotal: this.state.timerTotal + 60,
+          // timer: this.state.timer + 60,
          })
       }
     }
@@ -74,13 +75,13 @@ class Pomodoro extends Component {
       if (breakLen > 1){
         this.setState({ 
           breakLen: breakLen - 1, 
-          // timerTotal: this.state.timerTotal - 60
+          // timer: this.state.timer - 60
         })
       };
       if (this.state.timerSession && breakLen > 1){
         this.setState({ 
           breakLen: breakLen - 1,
-          // timerTotal: this.state.timerTotal - 60,
+          // timer: this.state.timer - 60,
          })
       }
     }
@@ -93,13 +94,13 @@ class Pomodoro extends Component {
       if (sessionLen < 60 ){
         this.setState({ 
           sessionLen: sessionLen + 1,
-          timerTotal: this.state.timerTotal + 60
+          timer: this.state.timer + 60
         })
       };
       if (this.state.timerSession && sessionLen < 60 ){
         this.setState({ 
           sessionLen: sessionLen + 1,
-          timerTotal: (sessionLen + 1) * 60,
+          timer: (sessionLen + 1) * 60,
          })
       }
     }
@@ -112,13 +113,13 @@ class Pomodoro extends Component {
       if (sessionLen > 1){
         this.setState({ 
           sessionLen: sessionLen - 1,
-          timerTotal: this.state.timerTotal - 60,
+          timer: this.state.timer - 60,
         })
       };
       if (this.state.timerSession && sessionLen > 1){
         this.setState({ 
           sessionLen: sessionLen - 1,
-          timerTotal: (sessionLen - 1) * 60,
+          timer: (sessionLen - 1) * 60,
          })
       }
     }
@@ -130,14 +131,14 @@ class Pomodoro extends Component {
       if (cycles < 5 ){
         this.setState({ 
           cycles: cycles + 1,
-          // timerTotal: this.state.timerTotal + cycleTime
+          // timer: this.state.timer + cycleTime
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles < 5 ){
         this.setState({ 
           cycles: cycles + 1,
           cyclesLeft: this.state.cyclesLeft + 1,
-          // timerTotal: this.state.timerTotal + cycleTime
+          // timer: this.state.timer + cycleTime
          })
       }
     }
@@ -150,14 +151,14 @@ class Pomodoro extends Component {
       if (cycles > 1){
         this.setState({ 
           cycles: cycles - 1,
-          // timerTotal: this.state.timerTotal - cycleTime
+          // timer: this.state.timer - cycleTime
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles > 1 ){
         this.setState({ 
           cycles: cycles - 1,
           cyclesLeft: this.state.cyclesLeft - 1,
-          // timerTotal: this.state.timerTotal - cycleTime
+          // timer: this.state.timer - cycleTime
         })
       }
     }
@@ -172,21 +173,26 @@ class Pomodoro extends Component {
 
       intervalId: null,
 
-      cycles: 1,
+      cycles: 3,
       cyclesLeft: null,
       cyclesStarted: false,
       
-      timerTotal: 1500,
+      timer: 1500,
       timerStart: false,
-      timerSession: true,
-      timerType: 'session'
+      timerSession: true
     })
   }
 
   toggleSettingsHandler = () => {
-    // console.log('toggle settings');
-    const doesShow = this.state.showSettings;
-    this.setState({ showSettings: !doesShow });
+    if (this.state.settingsClass === ''){
+      this.setState({ 
+        settingsClass: "slide-settings"
+      });
+    } else {
+      this.setState({ 
+        settingsClass: ""
+      });
+    }
   }
 
   timerStartHandler = () => {
@@ -198,10 +204,10 @@ class Pomodoro extends Component {
     });
 
     if (!timerStart){
-      console.log('timer started');
+      // console.log('timer started');
       this.start();
     } else {
-      console.log('timer paused');
+      // console.log('timer paused');
       this.stop();
     }
   };
@@ -209,37 +215,31 @@ class Pomodoro extends Component {
   tick = () => {
     const audio = document.getElementById('beep');
 
-    if (this.state.timerTotal === 0 && this.state.timerSession) {
+    if (this.state.timer === 0 && this.state.timerSession) {
       audio.play();
       this.setState({
-        timerTotal: this.state.breakLen * 60,
-        timerSession: false
+        timer: this.state.breakLen * 60,
+        timerSession: false,
+        cyclesLeft: this.state.cyclesLeft - 1
       })
     }
 
-    else if (this.state.timerTotal === 0 && !this.state.timerSession) {
+    else if (this.state.timer === 0 && !this.state.timerSession) {
       audio.play();
       this.resetHandler();
     }
 
     else {
-      this.setState({ timerTotal: this.state.timerTotal - 1})
+      this.setState({ timer: this.state.timer - 1})
     }
 
   }
 
   start = () => {
-    if (this.state.sessionLen !== null) {
-      this.setState({
-        intervalId: setInterval(this.tick,1000),
-        // cyclesLeft: this.state.cycles
-      })
-      
-    } else {
-      this.setState({
-        intervalId: setInterval(this.tick,1000)
-      })
-    }
+    this.setState({
+      intervalId: setInterval(this.tick,1000),
+      cyclesLeft: this.state.cycles
+    })
   }
 
   stop = () => {
@@ -250,8 +250,8 @@ class Pomodoro extends Component {
   };
 
   displayTimer = () => {
-    let minutes = Math.floor(this.state.timerTotal / 60);
-    let seconds = this.state.timerTotal - minutes * 60;
+    let minutes = Math.floor(this.state.timer / 60);
+    let seconds = this.state.timer - minutes * 60;
     seconds = seconds < 10 ? '0' + seconds : seconds;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return minutes + ':' + seconds;
@@ -272,26 +272,6 @@ class Pomodoro extends Component {
   }
 
   render() {
-    let settings = null;
-
-    if (this.state.showSettings) {
-      settings = <Settings 
-        toggleSettingsHandler = {this.toggleSettingsHandler}
-        breakLen = {this.state.breakLen}
-        incBreakHandler = {this.incBreakHandler}
-        decBreakHandler = {this.decBreakHandler}
-    
-        sessionLen = {this.state.sessionLen}
-        incSessionHandler = {this.incSessionHandler}
-        decSessionHandler = {this.decSessionHandler}
-
-        cycles = {this.state.cycles}
-        incCycleHandler = {this.incCycleHandler}
-        decCycleHandler = {this.decCycleHandler}
-
-        resetHandler = {this.resetHandler}
-      />
-    };
 
     let pomodoroBg = {
       background: "linear-gradient(165.18deg, #D66770 0%, rgba(254, 111, 69, 0.86) 92.3%)"
@@ -306,7 +286,7 @@ class Pomodoro extends Component {
         <div className="Pomodoro-container" style={pomodoroBg}>
 
         <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
-        {!this.state.showSettings ? (
+        {this.state.settingsClass !== '' ? (
         <SettingsLogo className="settings-icon" alt="settings icon"/>
       ) : (
         'x'
@@ -319,14 +299,29 @@ class Pomodoro extends Component {
             displayTimer = {this.displayTimer}
           />
           <Cycle
-            timerType = {this.state.timerType}
             timerSession = {this.state.timerSession}
             cycles = {this.state.cycles}
             cyclesStarted = {this.state.cyclesStarted}
             cyclesLeft = {this.state.cyclesLeft}
             displayCycles = {this.displayCycles}
           />
-          {settings}
+          <Settings 
+            settingsClass = {this.state.settingsClass}
+            toggleSettingsHandler = {this.toggleSettingsHandler}
+            breakLen = {this.state.breakLen}
+            incBreakHandler = {this.incBreakHandler}
+            decBreakHandler = {this.decBreakHandler}
+    
+            sessionLen = {this.state.sessionLen}
+            incSessionHandler = {this.incSessionHandler}
+            decSessionHandler = {this.decSessionHandler}
+
+            cycles = {this.state.cycles}
+            incCycleHandler = {this.incCycleHandler}
+            decCycleHandler = {this.decCycleHandler}
+
+        resetHandler = {this.resetHandler}
+      />
           <Start 
             timerStartClicked = {this.timerStartHandler}
             timerStart = {this.state.timerStart}
