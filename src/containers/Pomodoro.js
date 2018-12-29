@@ -22,7 +22,8 @@ class Pomodoro extends Component {
       timer: 1500, 
 
       cycles: 3,
-      cyclesLeft: null,
+      intervalCycles: 3,
+      cyclesTimer: 5400,
 
       timerStart: false,
       cyclesStarted: false,
@@ -45,23 +46,26 @@ class Pomodoro extends Component {
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.displayTimer = this.displayTimer.bind(this);
-    this.displayCycles = this.displayCycles.bind(this);
+    // this.displayCycles = this.displayCycles.bind(this);
     this.alarmSoundHandler = this.alarmSoundHandler.bind(this);
   }
 
   incBreakHandler = () => {
     // console.log('clicked on incBreakHandler');
     const breakLen = this.state.breakLen;
+
     if (!this.state.timerStart){
       if (breakLen < 60 ){
         this.setState({ 
           breakLen: breakLen + 1,
+          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles)
           // timer: this.state.timer + 60,
         })
       };
       if (this.state.timerSession && breakLen < 60){
         this.setState({ 
           breakLen: breakLen + 1,
+          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles)
           // timer: this.state.timer + 60,
          })
       }
@@ -75,13 +79,13 @@ class Pomodoro extends Component {
       if (breakLen > 1){
         this.setState({ 
           breakLen: breakLen - 1, 
-          // timer: this.state.timer - 60
+          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles)
         })
       };
       if (this.state.timerSession && breakLen > 1){
         this.setState({ 
           breakLen: breakLen - 1,
-          // timer: this.state.timer - 60,
+          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles)
          })
       }
     }
@@ -94,12 +98,14 @@ class Pomodoro extends Component {
       if (sessionLen < 60 ){
         this.setState({ 
           sessionLen: sessionLen + 1,
+          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles),
           timer: this.state.timer + 60
         })
       };
       if (this.state.timerSession && sessionLen < 60 ){
         this.setState({ 
           sessionLen: sessionLen + 1,
+          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles),
           timer: (sessionLen + 1) * 60,
          })
       }
@@ -113,12 +119,14 @@ class Pomodoro extends Component {
       if (sessionLen > 1){
         this.setState({ 
           sessionLen: sessionLen - 1,
+          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles),
           timer: this.state.timer - 60,
         })
       };
       if (this.state.timerSession && sessionLen > 1){
         this.setState({ 
           sessionLen: sessionLen - 1,
+          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles),
           timer: (sessionLen - 1) * 60,
          })
       }
@@ -127,18 +135,18 @@ class Pomodoro extends Component {
 
   incCycleHandler = () => {
     const cycles = this.state.cycles;
+    const totalSeconds = (this.state.sessionLen + this.state.breakLen) * 60;
     if (!this.state.timerStart){
       if (cycles < 5 ){
         this.setState({ 
           cycles: cycles + 1,
-          // timer: this.state.timer + cycleTime
+          cyclesTimer: (cycles + 1) * totalSeconds
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles < 5 ){
         this.setState({ 
           cycles: cycles + 1,
-          cyclesLeft: this.state.cyclesLeft + 1,
-          // timer: this.state.timer + cycleTime
+          cyclesTimer: (cycles + 1) * totalSeconds
          })
       }
     }
@@ -147,18 +155,18 @@ class Pomodoro extends Component {
 
   decCycleHandler = () => {
     const cycles = this.state.cycles;
+    const totalSeconds = (this.state.sessionLen + this.state.breakLen) * 60;
     if (!this.state.timerStart){
       if (cycles > 1){
         this.setState({ 
           cycles: cycles - 1,
-          // timer: this.state.timer - cycleTime
+          cyclesTimer: (cycles - 1) * totalSeconds
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles > 1 ){
         this.setState({ 
           cycles: cycles - 1,
-          cyclesLeft: this.state.cyclesLeft - 1,
-          // timer: this.state.timer - cycleTime
+          cyclesTimer: (cycles - 1) * totalSeconds
         })
       }
     }
@@ -174,7 +182,7 @@ class Pomodoro extends Component {
       intervalId: null,
 
       cycles: 3,
-      cyclesLeft: null,
+      cyclesTimer: 5400,
       cyclesStarted: false,
       
       timer: 1500,
@@ -215,30 +223,41 @@ class Pomodoro extends Component {
   tick = () => {
     const audio = document.getElementById('beep');
 
-    if (this.state.timer === 0 && this.state.timerSession) {
-      audio.play();
-      this.setState({
-        timer: this.state.breakLen * 60,
-        timerSession: false,
-        cyclesLeft: this.state.cyclesLeft - 1
-      })
-    }
-
-    else if (this.state.timer === 0 && !this.state.timerSession) {
+    if (this.state.cyclesTimer === 0){
       audio.play();
       this.resetHandler();
     }
+    
+    else if (this.state.timer === 0 && this.state.timerSession && this.state.cyclesTimer > 0) {
+      audio.play();
+      this.setState({
+        timer: this.state.breakLen * 60,
+        timerSession: false
+        // cyclesTimer: this.state.cyclesTimer - 2
+      })
+    }
+
+    else if (this.state.timer === 0 && !this.state.timerSession && this.state.cyclesTimer > 0) {
+      audio.play();
+      this.setState({
+        timer: this.state.sessionLen * 60,
+        timerSession: true
+        // cyclesTimer: this.state.cyclesTimer - 2
+      })
+    }
 
     else {
-      this.setState({ timer: this.state.timer - 1})
+      this.setState({ 
+        timer: this.state.timer - 1,
+        cyclesTimer: this.state.cyclesTimer - 1
+      })
     }
 
   }
 
   start = () => {
     this.setState({
-      intervalId: setInterval(this.tick,1000),
-      cyclesLeft: this.state.cycles
+      intervalId: setInterval(this.tick,1000)
     })
   }
 
@@ -257,15 +276,15 @@ class Pomodoro extends Component {
     return minutes + ':' + seconds;
   }
 
-  displayCycles = () => { 
-    const circlesArr = [];
+  // displayCycles = () => { 
+  //   const circlesArr = [];
 
-    for (let i = 0; i < this.state.cycles; i++) {
-      circlesArr.push(<div key={i}className="circle-cycle"></div>);   
-    }
+  //   for (let i = 0; i < this.state.cycles; i++) {
+  //     circlesArr.push(<div key={i}className="circle-cycle"></div>);   
+  //   }
   
-    return circlesArr;
-  }
+  //   return circlesArr;
+  // }
 
   alarmSoundHandler = () => {
     console.log('alarmSoundHandler');
@@ -300,10 +319,11 @@ class Pomodoro extends Component {
           />
           <Cycle
             timerSession = {this.state.timerSession}
-            cycles = {this.state.cycles}
             cyclesStarted = {this.state.cyclesStarted}
-            cyclesLeft = {this.state.cyclesLeft}
-            displayCycles = {this.displayCycles}
+            cyclesTimer = {this.state.cyclesTimer}
+            intervalCycles = {this.state.intervalCycles}
+            cycles = {this.state.cycles}
+            // displayCycles = {this.displayCycles}
           />
           <Settings 
             settingsClass = {this.state.settingsClass}
