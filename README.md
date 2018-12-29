@@ -33,8 +33,12 @@ This is a Pomodoro Clock using React.
 
 ### Challenges
 
-Finding the right directory structure for my app before coding the design (figma). 
-* deciding between a state and a functional component. 
+* Finding the right directory structure for my app before coding the design (figma). 
+* Deciding between a state and a functional component. 
+* Countdown timer
+* Countdown Cycles
+* Color cycles ellipse if done
+* Slide Toggle settings 
 
 Once I have my directory structure, I'll code the design I made in Figma
 

@@ -137,13 +137,13 @@ class Pomodoro extends Component {
     const cycles = this.state.cycles;
     const totalSeconds = (this.state.sessionLen + this.state.breakLen) * 60;
     if (!this.state.timerStart){
-      if (cycles < 5 ){
+      if (cycles < 4 ){
         this.setState({ 
           cycles: cycles + 1,
           cyclesTimer: (cycles + 1) * totalSeconds
         })
       };
-      if (this.state.timerSession && this.state.cyclesStarted && cycles < 5 ){
+      if (this.state.timerSession && this.state.cyclesStarted && cycles < 4 ){
         this.setState({ 
           cycles: cycles + 1,
           cyclesTimer: (cycles + 1) * totalSeconds
