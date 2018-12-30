@@ -1,16 +1,16 @@
 @import '../../Utils/helpers';
 
 .circle {
-  border: 2px solid #fff;
+  // border: 2px solid #fff;
   background-color: transparent;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   border-radius: 1000px; 
   margin: 0.5em;
 
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
-    width: 450px;
-    height: 450px;
+    // width: 450px;
+    // height: 450px;
   }
 }
 
@@ -27,7 +27,7 @@
   font-size: em(14px);
 
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
-    font-size: em(20px);
+    // font-size: em(20px);
   }
   
 }
@@ -35,6 +35,6 @@
   font-size: 36px;
 
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
-    font-size: em(60px);
+    // font-size: em(60px);
   }
 }

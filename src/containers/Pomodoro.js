@@ -29,7 +29,11 @@ class Pomodoro extends Component {
       cyclesStarted: false,
       // showSettings: false,
 
-      settingsClass: "slide-settings"
+      settingsClass: "slide-settings",
+
+      progress: 0,
+      radius: 125, // half of the width of .circle ClassName
+      stroke: 2
       
     }
 
@@ -65,7 +69,8 @@ class Pomodoro extends Component {
       if (this.state.timerSession && breakLen < 60){
         this.setState({ 
           breakLen: breakLen + 1,
-          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles)
+          cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles),
+          progress: 0
           // timer: this.state.timer + 60,
          })
       }
@@ -85,7 +90,8 @@ class Pomodoro extends Component {
       if (this.state.timerSession && breakLen > 1){
         this.setState({ 
           breakLen: breakLen - 1,
-          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles)
+          cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles),
+          progress: 0
          })
       }
     }
@@ -99,7 +105,8 @@ class Pomodoro extends Component {
         this.setState({ 
           sessionLen: sessionLen + 1,
           cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles),
-          timer: this.state.timer + 60
+          timer: this.state.timer + 60,
+          progress: 0
         })
       };
       if (this.state.timerSession && sessionLen < 60 ){
@@ -107,6 +114,7 @@ class Pomodoro extends Component {
           sessionLen: sessionLen + 1,
           cyclesTimer: this.state.cyclesTimer + (60 * this.state.cycles),
           timer: (sessionLen + 1) * 60,
+          progress: 0
          })
       }
     }
@@ -121,6 +129,7 @@ class Pomodoro extends Component {
           sessionLen: sessionLen - 1,
           cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles),
           timer: this.state.timer - 60,
+          progress: 0
         })
       };
       if (this.state.timerSession && sessionLen > 1){
@@ -128,6 +137,7 @@ class Pomodoro extends Component {
           sessionLen: sessionLen - 1,
           cyclesTimer: this.state.cyclesTimer - (60 * this.state.cycles),
           timer: (sessionLen - 1) * 60,
+          progress: 0
          })
       }
     }
@@ -187,7 +197,9 @@ class Pomodoro extends Component {
       
       timer: 1500,
       timerStart: false,
-      timerSession: true
+      timerSession: true,
+
+      progress: 0
     })
   }
 
@@ -223,33 +235,40 @@ class Pomodoro extends Component {
   tick = () => {
     const audio = document.getElementById('beep');
 
+    // Cycles Timer
     if (this.state.cyclesTimer === 0){
       audio.play();
       this.resetHandler();
     }
     
+    // Session Timer 
     else if (this.state.timer === 0 && this.state.timerSession && this.state.cyclesTimer > 0) {
       audio.play();
       this.setState({
         timer: this.state.breakLen * 60,
-        timerSession: false
+        timerSession: false,
+        progress: 0
         // cyclesTimer: this.state.cyclesTimer - 2
       })
     }
 
+    // Break Timer 
     else if (this.state.timer === 0 && !this.state.timerSession && this.state.cyclesTimer > 0) {
       audio.play();
       this.setState({
         timer: this.state.sessionLen * 60,
-        timerSession: true
+        timerSession: true,
+        progress: 0
         // cyclesTimer: this.state.cyclesTimer - 2
       })
     }
 
+    // All Timers
     else {
       this.setState({ 
         timer: this.state.timer - 1,
-        cyclesTimer: this.state.cyclesTimer - 1
+        cyclesTimer: this.state.cyclesTimer - 1,
+        progress: this.state.progress + 1
       })
     }
 
@@ -316,6 +335,9 @@ class Pomodoro extends Component {
             breakLen = {this.state.breakLen}
             sessionLen = {this.state.sessionLen}
             displayTimer = {this.displayTimer}
+            progress = {this.state.progress}
+            radius={ this.state.radius }
+            stroke={ this.state.stroke }
           />
           <Cycle
             timerSession = {this.state.timerSession}
