@@ -27,9 +27,9 @@ class Pomodoro extends Component {
 
       timerStart: false,
       cyclesStarted: false,
-      // showSettings: false,
 
-      settingsClass: "slide-settings",
+      settingsClass: "slide-settings box-shadow",
+      overlay: '',
 
       progress: 0,
       radius: 125, // half of the width of .circle ClassName
@@ -150,13 +150,15 @@ class Pomodoro extends Component {
       if (cycles < 4 ){
         this.setState({ 
           cycles: cycles + 1,
-          cyclesTimer: (cycles + 1) * totalSeconds
+          cyclesTimer: (cycles + 1) * totalSeconds,
+          intervalCycles: this.state.intervalCycles + 1
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles < 4 ){
         this.setState({ 
           cycles: cycles + 1,
-          cyclesTimer: (cycles + 1) * totalSeconds
+          cyclesTimer: (cycles + 1) * totalSeconds,
+          intervalCycles: this.state.intervalCycles + 1
          })
       }
     }
@@ -170,13 +172,15 @@ class Pomodoro extends Component {
       if (cycles > 1){
         this.setState({ 
           cycles: cycles - 1,
-          cyclesTimer: (cycles - 1) * totalSeconds
+          cyclesTimer: (cycles - 1) * totalSeconds,
+          intervalCycles: this.state.intervalCycles - 1
         })
       };
       if (this.state.timerSession && this.state.cyclesStarted && cycles > 1 ){
         this.setState({ 
           cycles: cycles - 1,
-          cyclesTimer: (cycles - 1) * totalSeconds
+          cyclesTimer: (cycles - 1) * totalSeconds,
+          intervalCycles: this.state.intervalCycles - 1
         })
       }
     }
@@ -194,6 +198,7 @@ class Pomodoro extends Component {
       cycles: 3,
       cyclesTimer: 5400,
       cyclesStarted: false,
+      intervalCycles: 3,
       
       timer: 1500,
       timerStart: false,
@@ -206,11 +211,13 @@ class Pomodoro extends Component {
   toggleSettingsHandler = () => {
     if (this.state.settingsClass === ''){
       this.setState({ 
-        settingsClass: "slide-settings"
+        settingsClass: "slide-settings",
+        overlay: ''
       });
     } else {
       this.setState({ 
-        settingsClass: ""
+        settingsClass: "",
+        overlay: 'bm-overlay'
       });
     }
   }
@@ -258,7 +265,8 @@ class Pomodoro extends Component {
       this.setState({
         timer: this.state.sessionLen * 60,
         timerSession: true,
-        progress: 0
+        progress: 0,
+        intervalCycles: this.state.intervalCycles - 1
         // cyclesTimer: this.state.cyclesTimer - 2
       })
     }
@@ -295,16 +303,6 @@ class Pomodoro extends Component {
     return minutes + ':' + seconds;
   }
 
-  // displayCycles = () => { 
-  //   const circlesArr = [];
-
-  //   for (let i = 0; i < this.state.cycles; i++) {
-  //     circlesArr.push(<div key={i}className="circle-cycle"></div>);   
-  //   }
-  
-  //   return circlesArr;
-  // }
-
   alarmSoundHandler = () => {
     console.log('alarmSoundHandler');
   }
@@ -321,8 +319,8 @@ class Pomodoro extends Component {
 
     return (
       <div className="App">
+      <div className={this.state.overlay}></div>
         <div className="Pomodoro-container" style={pomodoroBg}>
-
         <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
         {this.state.settingsClass !== '' ? (
         <SettingsLogo className="settings-icon" alt="settings icon"/>
@@ -345,9 +343,20 @@ class Pomodoro extends Component {
             cyclesTimer = {this.state.cyclesTimer}
             intervalCycles = {this.state.intervalCycles}
             cycles = {this.state.cycles}
+            progress={this.state.progress}
+            breakLen = {this.state.breakLen}
+            sessionLen = {this.state.sessionLen}
             // displayCycles = {this.displayCycles}
           />
-          <Settings 
+          
+          <Start 
+            timerStartClicked = {this.timerStartHandler}
+            timerStart = {this.state.timerStart}
+          />
+        </div>
+        <audio id="beep" src={coolAlarm}>
+        </audio>
+        <Settings 
             settingsClass = {this.state.settingsClass}
             toggleSettingsHandler = {this.toggleSettingsHandler}
             breakLen = {this.state.breakLen}
@@ -364,13 +373,6 @@ class Pomodoro extends Component {
 
         resetHandler = {this.resetHandler}
       />
-          <Start 
-            timerStartClicked = {this.timerStartHandler}
-            timerStart = {this.state.timerStart}
-          />
-        </div>
-        <audio id="beep" src={coolAlarm}>
-        </audio>
       </div>
     );
   }

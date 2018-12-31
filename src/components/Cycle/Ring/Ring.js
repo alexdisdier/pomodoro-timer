@@ -14,16 +14,16 @@ class Ring extends Component {
   render() {
     const { radius, stroke, progress, timerSession } = this.props;
 
-    let progressTimer;
+    // let progressTimer;
 
-    if (timerSession){
-      progressTimer = this.props.sessionLen * 60;
-    }
-    else {
-      progressTimer = this.props.breakLen * 60;
-    }
+    // if (timerSession){
+    //   progressTimer = this.props.sessionLen * 60;
+    // }
+    // else {
+    //   progressTimer = this.props.breakLen * 60;
+    // }
 
-    const strokeDashoffset = this.circumference - progress / progressTimer * this.circumference;
+    const strokeDashoffset = this.circumference - progress / 100 * this.circumference;
   
     return (
       <svg className="svg-circle"

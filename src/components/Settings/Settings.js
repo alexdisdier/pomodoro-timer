@@ -7,8 +7,16 @@ import Cycle from './Cycle/Cycle';
 
 const settings = (props) => {
 
+  let style;
+
+  if (props.settingsClass === ""){
+    style = {
+      boxShadow: "-8px 0px 25px -10px rgba(0,0,0,1)"
+    }
+  }
+
   return (
-    <div id="settings" className={props.settingsClass}>
+    <div id="settings" style={style} className={props.settingsClass}>
       <Session
         sessionLen = {props.sessionLen}
         incSessionHandler = {props.incSessionHandler}

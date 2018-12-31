@@ -92,6 +92,6 @@ pomodoro-clock
 
 * List of github emoji code [emoji](https://gist.github.com/parmentf/035de27d6ed1dce0b36a)
 
-* (clearIntervall doesn't work)[https://stackoverflow.com/questions/8184135/clearinterval-doesnt-work]
+* (ClearIntervall doesn't work)[https://stackoverflow.com/questions/8184135/clearinterval-doesnt-work]
 
-* 
+* (Building a progress ring component)[https://css-tricks.com/building-progress-ring-quickly/]
