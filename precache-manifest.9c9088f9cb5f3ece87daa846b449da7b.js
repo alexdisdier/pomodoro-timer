@@ -20,19 +20,19 @@ self.__precacheManifest = [
     "url": "/pomodoro-timer/static/js/runtime~main.0658e00c.js"
   },
   {
-    "revision": "0a05b858c35ade5ee676",
-    "url": "/pomodoro-timer/static/js/main.0a05b858.chunk.js"
+    "revision": "6fcd4519392f064727d1",
+    "url": "/pomodoro-timer/static/js/main.6fcd4519.chunk.js"
   },
   {
-    "revision": "ed88d9409e2279918096",
-    "url": "/pomodoro-timer/static/js/1.ed88d940.chunk.js"
+    "revision": "52c223a787eaa3cb6fd9",
+    "url": "/pomodoro-timer/static/js/1.52c223a7.chunk.js"
   },
   {
-    "revision": "0a05b858c35ade5ee676",
-    "url": "/pomodoro-timer/static/css/main.c93cde51.chunk.css"
+    "revision": "6fcd4519392f064727d1",
+    "url": "/pomodoro-timer/static/css/main.50222714.chunk.css"
   },
   {
-    "revision": "9f23a9c3746682826bd8a7a0b7527def",
+    "revision": "8d8d4287a86f2c0ca9cbd65411bf1bca",
     "url": "/pomodoro-timer/index.html"
   }
 ];
