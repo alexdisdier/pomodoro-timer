@@ -1,0 +1,69 @@
+{
+  "name": "react-motion-drawer",
+  "version": "3.1.0",
+  "description": "Navigation drawer built with the awesome react-motion and react-hammerjs",
+  "scripts": {
+    "build": "babel lib --out-dir ./",
+    "build-example": "webpack --config example/webpack.config.js",
+    "dev": "run-p \"build --watch\" serve",
+    "serve": "npm run build-example && webpack-dev-server --config example/webpack.config.js",
+    "open": "opn http://localhost:8888/example/index.html",
+    "lint": "eslint lib",
+    "patch-release": "npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor && npm publish && git push --follow-tags",
+    "major-release": "npm version major && npm publish && git push --follow-tags",
+    "prepare": "npm run build"
+  },
+  "main": "./drawer.js",
+  "files": [
+    "drawer.js",
+    "styles.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stoeffel/react-motion-drawer.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-motion",
+    "react-hammerjs",
+    "touch",
+    "drawer",
+    "navigation"
+  ],
+  "author": "Christoph Hermann <schtoeffel@gmail.com> (http://github.com/stoeffel)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stoeffel/react-motion-drawer/issues"
+  },
+  "homepage": "https://github.com/stoeffel/react-motion-drawer",
+  "peerDependencies": {
+    "react": "^15.4.2 || ^16.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.1.10",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.9.0",
+    "eslint-plugin-react": "^7.4.0",
+    "file-loader": "^1.1.5",
+    "npm-run-all": "^4.1.2",
+    "opn-cli": "^3.1.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
+  },
+  "dependencies": {
+    "1-liners": "^0.4.0",
+    "prop-types": "^15.5.10",
+    "react-hammerjs": "^1.0.1",
+    "react-motion": "^0.5.2"
+  }
+}

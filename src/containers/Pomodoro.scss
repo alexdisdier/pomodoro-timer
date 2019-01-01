@@ -72,3 +72,16 @@ body {
   opacity: 1;
   transition: all 0.2s ease 0s;
 }
+
+#stage {
+  background: #20bb5f;
+  border: 5px solid #009b2f;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  text-align: center;
+  font: 30px;
+  left: 200px;
+  top: 50px;
+  position: relative;
+}

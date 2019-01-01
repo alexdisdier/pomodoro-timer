@@ -5,8 +5,8 @@
   padding: em(8px);
   border: 2px solid #fff;
   background-color: transparent;
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   border-radius: 1000px; 
 
   &:hover {
@@ -14,8 +14,8 @@
   }
   
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
-    width: 120px;
-    height: 120px;
+    // width: 120px;
+    // height: 120px;
   }
 }
 
@@ -29,11 +29,11 @@
 }
 
 .play-icon {
-  width: 36px;
+  width: 24px;
   height: auto;
   fill: #fff;
 
   @media only screen and (min-width: $breakpoint-sm-tablet) and (max-width: $breakpoint-desktop)and (orientation: portrait) {
-    width: 72px;
+    // width: 72px;
   }
 }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Hammer from 'hammerjs';
+
 import { ReactComponent as SettingsLogo } from './settings.svg';
 // import alarmTone from '../assets/mp3/alarm-tone/alarm-tone.mp3';
 import coolAlarm from '../assets/mp3/cool-alarm/cool-alarm.mp3';
@@ -32,7 +34,7 @@ class Pomodoro extends Component {
       overlay: '',
 
       progress: 0,
-      radius: 125, // half of the width of .circle ClassName
+      radius: 100, // half of the width of .circle ClassName
       stroke: 2
       
     }
@@ -50,8 +52,9 @@ class Pomodoro extends Component {
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.displayTimer = this.displayTimer.bind(this);
-    // this.displayCycles = this.displayCycles.bind(this);
     this.alarmSoundHandler = this.alarmSoundHandler.bind(this);
+
+    this.swipeHandler = this.swipeHandler.bind(this);
   }
 
   incBreakHandler = () => {
@@ -208,7 +211,69 @@ class Pomodoro extends Component {
     })
   }
 
+  componentDidMount() {
+    // console.log('did mount');
+    this.hammer = Hammer(document.getElementById('stage-hammer-js'));
+    // this.hammer.on('rotate', this.swipeHandler());
+    this.hammer.on('swipe', this.swipeHandler());
+  }
+
+  componentWillUnmount() {
+    // console.log('did Unmount');
+    this.hammer = Hammer(document.getElementById('stage-hammer-js'));
+    // this.hammer.off('rotate', this.swipeHandler());
+    this.hammer.off('swipe', this.swipeHandler());
+  }
+
+  swipeHandler(){
+    console.log('swipe handler');
+    // Use the div below to practice. 
+    // <div id="hammer-gestures"><span>Stage test</span></div>
+    // get a reference to an element
+    var stage = document.getElementById('stage-hammer-js');
+    var settings = document.getElementById('settings');
+    var overlay = document.getElementById('overlay');
+
+    // create a manager for that element
+    var manager = new Hammer.Manager(stage);
+ 
+    // create a recognizer
+    // var Rotate = new Hammer.Rotate();
+    const Swipe = new Hammer.Swipe();
+ 
+    // Add the recognizer to the manager
+    manager.add(Swipe);
+
+    // Declare global variables to swiped correct distance
+    // var deltaX = 0;
+    // var deltaY = 0;
+
+    // Subscribe to a desired event
+    manager.on('swipe', function(e) {
+      // console.log('swiping');
+
+      var direction = e.offsetDirection;
+
+      if (direction === 4 || direction === 2) {
+    
+        if (settings.classList.contains('slide-settings')){
+          settings.classList.remove('slide-settings');
+          settings.style.boxShadow = 'box-shadow: rgb(0, 0, 0) -8px 0px 25px -10px';
+          overlay.classList.add('bm-overlay');
+        } else {
+          settings.classList.add('slide-settings');
+          settings.style.boxShadow = 'none';
+          overlay.classList.remove('bm-overlay');
+        }
+
+      }
+     
+
+    });
+  }
+
   toggleSettingsHandler = () => {
+    console.log('hello world');
     if (this.state.settingsClass === ''){
       this.setState({ 
         settingsClass: "slide-settings",
@@ -318,8 +383,8 @@ class Pomodoro extends Component {
     }
 
     return (
-      <div className="App">
-      <div className={this.state.overlay}></div>
+      <div className="App" id="stage-hammer-js">
+      <div className={this.state.overlay} id="overlay"></div>
         <div className="Pomodoro-container" style={pomodoroBg}>
         <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
         {this.state.settingsClass !== '' ? (
@@ -371,8 +436,8 @@ class Pomodoro extends Component {
             incCycleHandler = {this.incCycleHandler}
             decCycleHandler = {this.decCycleHandler}
 
-        resetHandler = {this.resetHandler}
-      />
+            resetHandler = {this.resetHandler}
+        />
       </div>
     );
   }
