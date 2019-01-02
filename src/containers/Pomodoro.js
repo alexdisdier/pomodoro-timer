@@ -46,7 +46,9 @@ class Pomodoro extends Component {
     this.incCycleHandler = this.incCycleHandler.bind(this);
     this.decCycleHandler = this.decCycleHandler.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
+
     this.toggleSettingsHandler = this.toggleSettingsHandler.bind(this);
+
     this.timerStartHandler = this.timerStartHandler.bind(this);
     this.tick = this.tick.bind(this);
     this.start = this.start.bind(this);
@@ -214,14 +216,12 @@ class Pomodoro extends Component {
   componentDidMount() {
     // console.log('did mount');
     this.hammer = Hammer(document.getElementById('stage-hammer-js'));
-    // this.hammer.on('rotate', this.swipeHandler());
     this.hammer.on('swipe', this.swipeHandler());
   }
 
   componentWillUnmount() {
     // console.log('did Unmount');
     this.hammer = Hammer(document.getElementById('stage-hammer-js'));
-    // this.hammer.off('rotate', this.swipeHandler());
     this.hammer.off('swipe', this.swipeHandler());
   }
 
@@ -239,35 +239,35 @@ class Pomodoro extends Component {
  
     // create a recognizer
     // var Rotate = new Hammer.Rotate();
-    const Swipe = new Hammer.Swipe();
+    const Swipe = new Hammer.Swipe({
+      threshold: 2,
+      velocity: 0.1
+    });
  
     // Add the recognizer to the manager
     manager.add(Swipe);
 
     // Declare global variables to swiped correct distance
-    // var deltaX = 0;
+    var deltaX = 0;
     // var deltaY = 0;
 
     // Subscribe to a desired event
     manager.on('swipe', function(e) {
       // console.log('swiping');
+      deltaX = deltaX + e.deltaX;
 
       var direction = e.offsetDirection;
 
       if (direction === 4 || direction === 2) {
-    
-        if (settings.classList.contains('slide-settings')){
+        // e.target.innerText = deltaX;
+        if (deltaX < 0){
           settings.classList.remove('slide-settings');
-          settings.style.boxShadow = 'box-shadow: rgb(0, 0, 0) -8px 0px 25px -10px';
           overlay.classList.add('bm-overlay');
         } else {
           settings.classList.add('slide-settings');
-          settings.style.boxShadow = 'none';
           overlay.classList.remove('bm-overlay');
         }
-
       }
-     
 
     });
   }
@@ -374,6 +374,8 @@ class Pomodoro extends Component {
 
   render() {
 
+    let openSettings;
+
     let pomodoroBg = {
       background: "linear-gradient(165.18deg, #D66770 0%, rgba(254, 111, 69, 0.86) 92.3%)"
     }
@@ -382,16 +384,16 @@ class Pomodoro extends Component {
       pomodoroBg.background = "linear-gradient(163.95deg, #94CCCB 1.06%, #E1E19D 92.27%)"
     }
 
+    if (this.state.settingsClass !== ''){
+      openSettings = <SettingsLogo className="settings-icon" alt="settings icon" />;
+    }
+
     return (
       <div className="App" id="stage-hammer-js">
       <div className={this.state.overlay} id="overlay"></div>
         <div className="Pomodoro-container" style={pomodoroBg}>
         <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
-        {this.state.settingsClass !== '' ? (
-        <SettingsLogo className="settings-icon" alt="settings icon"/>
-      ) : (
-        'x'
-      )}  
+        {openSettings}  
         </button>
           <Timer
             timerSession = {this.state.timerSession}
@@ -411,7 +413,6 @@ class Pomodoro extends Component {
             progress={this.state.progress}
             breakLen = {this.state.breakLen}
             sessionLen = {this.state.sessionLen}
-            // displayCycles = {this.displayCycles}
           />
           
           <Start 

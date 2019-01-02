@@ -61,6 +61,7 @@ body {
 
 .slide-settings {
   transform: translate3d(100%, 0px, 0px);
+  box-shadow: none !important;
 }
 
 .bm-overlay {
@@ -80,7 +81,7 @@ body {
   height: 200px;
   line-height: 200px;
   text-align: center;
-  font: 30px;
+  font-size: 30px;
   left: 200px;
   top: 50px;
   position: relative;
