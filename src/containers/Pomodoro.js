@@ -47,7 +47,7 @@ class Pomodoro extends Component {
     this.decCycleHandler = this.decCycleHandler.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
 
-    this.toggleSettingsHandler = this.toggleSettingsHandler.bind(this);
+    this.openSettingsHandler = this.openSettingsHandler.bind(this);
 
     this.timerStartHandler = this.timerStartHandler.bind(this);
     this.tick = this.tick.bind(this);
@@ -226,65 +226,71 @@ class Pomodoro extends Component {
   }
 
   swipeHandler(){
-    console.log('swipe handler');
-    // Use the div below to practice. 
-    // <div id="hammer-gestures"><span>Stage test</span></div>
-    // get a reference to an element
-    var stage = document.getElementById('stage-hammer-js');
-    var settings = document.getElementById('settings');
-    var overlay = document.getElementById('overlay');
+    const stage = document.getElementById('stage-hammer-js');
+    const settings = document.getElementById('settings');
+    const overlay = document.getElementById('overlay');
 
     // create a manager for that element
-    var manager = new Hammer.Manager(stage);
+    const settingsManager = new Hammer.Manager(stage);
  
     // create a recognizer
-    // var Rotate = new Hammer.Rotate();
-    const Swipe = new Hammer.Swipe({
-      threshold: 2,
-      velocity: 0.1
+    const pan = new Hammer.Pan({
+      threshold: 0,
+      pointers: 0
     });
+
+    // const tap = new Hammer.Tap();
+
+    // we want to detect both the same time
+    // pan.recognizeWith(tap);
  
     // Add the recognizer to the manager
-    manager.add(Swipe);
+    // manager.add([pan,tap]);
+    settingsManager.add(pan);
 
     // Declare global variables to swiped correct distance
-    var deltaX = 0;
+    // var deltaX = 0;
     // var deltaY = 0;
 
     // Subscribe to a desired event
-    manager.on('swipe', function(e) {
+    settingsManager.on('pan', function(e) {
       // console.log('swiping');
-      deltaX = deltaX + e.deltaX;
+      // console.log(e.velocityX);
+      // deltaX = deltaX + e.deltaX;
 
-      var direction = e.offsetDirection;
-
-      if (direction === 4 || direction === 2) {
         // e.target.innerText = deltaX;
-        if (deltaX < 0){
+        // if (deltaX < 0){
+        if (e.velocityX < 0){
           settings.classList.remove('slide-settings');
           overlay.classList.add('bm-overlay');
         } else {
           settings.classList.add('slide-settings');
           overlay.classList.remove('bm-overlay');
         }
-      }
-
+      
     });
+
+    // settingsManager.on('tap', function(e) {
+    //     const pWidth = stage.offsetWidth;
+    //     console.log('stage width ' + pWidth);
+    //     const pOffset = e.clientX;
+    //     console.log('stage offset ' + pOffset);
+    //     var x = e.pageX - pOffset;
+    //     console.log(x);
+    //      if(pWidth/2 > x)
+    //          console.log('left');
+    //      else
+    //          console.log('right');
+    //  });
   }
 
-  toggleSettingsHandler = () => {
-    console.log('hello world');
-    if (this.state.settingsClass === ''){
-      this.setState({ 
-        settingsClass: "slide-settings",
-        overlay: ''
-      });
-    } else {
-      this.setState({ 
-        settingsClass: "",
-        overlay: 'bm-overlay'
-      });
-    }
+  openSettingsHandler = () => {
+    // console.log('settings opened');
+    const settings = document.getElementById('settings');
+    const overlay = document.getElementById('overlay');
+
+    settings.classList.remove('slide-settings');
+    overlay.classList.add('bm-overlay');
   }
 
   timerStartHandler = () => {
@@ -374,8 +380,6 @@ class Pomodoro extends Component {
 
   render() {
 
-    let openSettings;
-
     let pomodoroBg = {
       background: "linear-gradient(165.18deg, #D66770 0%, rgba(254, 111, 69, 0.86) 92.3%)"
     }
@@ -384,16 +388,12 @@ class Pomodoro extends Component {
       pomodoroBg.background = "linear-gradient(163.95deg, #94CCCB 1.06%, #E1E19D 92.27%)"
     }
 
-    if (this.state.settingsClass !== ''){
-      openSettings = <SettingsLogo className="settings-icon" alt="settings icon" />;
-    }
-
     return (
       <div className="App" id="stage-hammer-js">
       <div className={this.state.overlay} id="overlay"></div>
         <div className="Pomodoro-container" style={pomodoroBg}>
-        <button id="toggle-settings" onClick={this.toggleSettingsHandler}>
-        {openSettings}  
+        <button id="open-settings" onClick={this.openSettingsHandler} aria-label="Open Settings">
+        <SettingsLogo className="settings-icon" alt="settings icon" /> 
         </button>
           <Timer
             timerSession = {this.state.timerSession}
@@ -424,7 +424,7 @@ class Pomodoro extends Component {
         </audio>
         <Settings 
             settingsClass = {this.state.settingsClass}
-            toggleSettingsHandler = {this.toggleSettingsHandler}
+            openSettingsHandler = {this.openSettingsHandler}
             breakLen = {this.state.breakLen}
             incBreakHandler = {this.incBreakHandler}
             decBreakHandler = {this.decBreakHandler}

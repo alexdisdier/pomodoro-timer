@@ -13,6 +13,7 @@ class Settings extends Component {
 
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.closeSettingsHandler = this.closeSettingsHandler.bind(this);
   }
 
   componentDidMount() {
@@ -34,21 +35,20 @@ class Settings extends Component {
     }
   }
 
-  render() {
-    let style;
-    let close;
+  closeSettingsHandler = () => {
+    // console.log('settings closed');
+    const settings = document.getElementById('settings');
+    const overlay = document.getElementById('overlay');
+    settings.classList.add('slide-settings');
+    overlay.classList.remove('bm-overlay');
+  }
 
-    if (this.props.settingsClass === ""){
-      style = {
-        boxShadow: "-8px 0px 25px -10px rgba(0,0,0,1)"
-      }
-      close = 'X';
-    }
+  render() {
 
   return (
-    <div id="settings" style={style} className={this.props.settingsClass} ref={this.setWrapperRef}>
-      <button id="toggle-settings" onClick={this.props.toggleSettingsHandler}>
-        {close}  
+    <div id="settings" className={this.props.settingsClass} ref={this.setWrapperRef}>
+      <button id="close-settings" onClick={this.closeSettingsHandler} aria-label="Close Settings">
+        X
       </button>
       <Session
         sessionLen = {this.props.sessionLen}
