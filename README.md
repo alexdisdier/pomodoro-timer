@@ -6,7 +6,7 @@ This is a Pomodoro Clock using React.
 
 ## Usage example
 
-:construction: work in progress...See a live version running this template - https://alexdisdier.github.io/pomodoro-timer/
+See a live version running this template - https://alexdisdier.github.io/pomodoro-timer/
 
 ## Guideline and Challenges
 
