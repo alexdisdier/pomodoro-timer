@@ -11,29 +11,29 @@ class Settings extends Component {
   constructor(props){
     super(props);
 
-    this.setWrapperRef = this.setWrapperRef.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
+    // this.setWrapperRef = this.setWrapperRef.bind(this);
+    // this.handleClickOutside = this.handleClickOutside.bind(this);
     this.closeSettingsHandler = this.closeSettingsHandler.bind(this);
   }
 
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
+  // componentDidMount() {
+  //   document.addEventListener('mousedown', this.handleClickOutside);
+  // }
 
-  componentWillUnmount() {
-    document.removeEventListener('mouseout',this.handleClickOutside);
-  }
+  // componentWillUnmount() {
+  //   document.removeEventListener('mouseout',this.handleClickOutside);
+  // }
 
-  setWrapperRef(node) {
-    this.wrapperRef = node;
-  }
+  // setWrapperRef(node) {
+  //   this.wrapperRef = node;
+  // }
 
-  handleClickOutside(event) {
-    // console.log('You clicked outside of settings!');
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)&& this.props.settingsClass === "") {
-      this.props.toggleSettingsHandler();
-    }
-  }
+  // handleClickOutside(event) {
+  //   // console.log('You clicked outside of settings!');
+  //   if (this.wrapperRef && !this.wrapperRef.contains(event.target)&& this.props.settingsClass === "") {
+  //     this.props.toggleSettingsHandler();
+  //   }
+  // }
 
   closeSettingsHandler = () => {
     // console.log('settings closed');
@@ -46,7 +46,8 @@ class Settings extends Component {
   render() {
 
   return (
-    <div id="settings" className={this.props.settingsClass} ref={this.setWrapperRef}>
+    // add to div #settings ref={this.setWrapperRef}
+    <div id="settings" className={this.props.settingsClass}>
       <button id="close-settings" onClick={this.closeSettingsHandler} aria-label="Close Settings">
         X
       </button>

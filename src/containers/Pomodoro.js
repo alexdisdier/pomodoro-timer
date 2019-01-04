@@ -380,6 +380,8 @@ class Pomodoro extends Component {
 
   render() {
 
+    // const alarm = 'https://alexdisdier.github.io/' + coolAlarm;
+
     let pomodoroBg = {
       background: "linear-gradient(165.18deg, #D66770 0%, rgba(254, 111, 69, 0.86) 92.3%)"
     }
