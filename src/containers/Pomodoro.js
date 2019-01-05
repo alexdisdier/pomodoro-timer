@@ -216,13 +216,13 @@ class Pomodoro extends Component {
   componentDidMount() {
     // console.log('did mount');
     this.hammer = Hammer(document.getElementById('stage-hammer-js'));
-    this.hammer.on('swipe', this.swipeHandler());
+    this.hammer.on('pan', this.swipeHandler());
   }
 
   componentWillUnmount() {
     // console.log('did Unmount');
     this.hammer = Hammer(document.getElementById('stage-hammer-js'));
-    this.hammer.off('swipe', this.swipeHandler());
+    this.hammer.off('pan', this.swipeHandler());
   }
 
   swipeHandler(){
@@ -235,7 +235,7 @@ class Pomodoro extends Component {
  
     // create a recognizer
     const pan = new Hammer.Pan({
-      threshold: 0,
+      threshold: 2,
       pointers: 0
     });
 
@@ -249,24 +249,33 @@ class Pomodoro extends Component {
     settingsManager.add(pan);
 
     // Declare global variables to swiped correct distance
-    // var deltaX = 0;
+    var deltaX = 0;
     // var deltaY = 0;
+    // var slideCount = 2;
+    // var activeSlide = 0;
 
     // Subscribe to a desired event
     settingsManager.on('pan', function(e) {
-      // console.log('swiping');
-      // console.log(e.velocityX);
-      // deltaX = deltaX + e.deltaX;
 
-        // e.target.innerText = deltaX;
-        // if (deltaX < 0){
-        if (e.velocityX < 0){
-          settings.classList.remove('slide-settings');
-          overlay.classList.add('bm-overlay');
-        } else {
-          settings.classList.add('slide-settings');
-          overlay.classList.remove('bm-overlay');
-        }
+      deltaX = deltaX + e.deltaX;
+      var direction = e.offsetDirection; // if === 2, going left, if === 4, going right
+      // console.log(direction);
+      // var translate3d = 'translate3d(' + deltaX + 'px, 0, 0)';
+      // console.log('deltaX: ' + deltaX);
+      // console.log('e.deltaX: ' + e.deltaX);
+      // console.log('inneWidth: ' + window.innerWidth);
+    
+      // if (e.isFinal){
+            // if (deltaX < 0){
+              if (direction === 2 && e.deltaX < -45) {
+                settings.classList.remove('slide-settings');
+                overlay.classList.add('bm-overlay');
+              } else if (direction === 4 && e.deltaX > 45){
+                settings.classList.add('slide-settings');
+                overlay.classList.remove('bm-overlay');
+              }
+      // }
+    
       
     });
 

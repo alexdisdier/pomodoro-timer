@@ -25,13 +25,14 @@ class Settings extends Component {
   // }
 
   // setWrapperRef(node) {
+  //   console.log(node);
   //   this.wrapperRef = node;
   // }
 
   // handleClickOutside(event) {
-  //   // console.log('You clicked outside of settings!');
-  //   if (this.wrapperRef && !this.wrapperRef.contains(event.target)&& this.props.settingsClass === "") {
-  //     this.props.toggleSettingsHandler();
+  //   if (this.wrapperRef && this.wrapperRef.contains(event.target)&& this.props.settingsClass === "") {
+  //     console.log('You clicked outside of settings!');
+  //     return this.closeSettingsHandler();
   //   }
   // }
 
