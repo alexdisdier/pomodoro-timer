@@ -86,7 +86,7 @@ pomodoro-clock
 
 ## Acknowledgments
 
-* This is part of Front End Libraries Projects in order to get the certification from [FreeCodeCamp](https://learn.freecodecamp.org/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)
+* This is part of Front End Libraries Projects in order to get the certification from [FreeCodeCamp](https://learn.freecodecamp.org/front-end-libraries/front-end-libraries-projects/build-a-pomodoro-clock)
 
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
